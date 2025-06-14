@@ -121,11 +121,7 @@ class RestModel(torch.nn.Module):
             W_pad = int(np.ceil(W / self.padding_factor) * self.padding_factor)
             pad_H = H_pad - H
             pad_W = W_pad - W
-            print('DEBUG: PAD x.shape={} pad_H={}, pad_W={}'.format(x.shape, pad_H, pad_W))
             return torch.nn.functional.pad(x, (0, pad_W, 0, pad_H), mode='constant', value=0), pad_H, pad_W
-            # return torch.nn.functional.pad(x, (pad_W//2, pad_W//2, pad_H//2, pad_H//2), mode='constant', value=0), pad_H, pad_W
-            # return torch.nn.functional.pad(x, (pad_W, 0, pad_H, 0), mode='constant', value=0), pad_H, pad_W
-            # return x, None, None
 
     def crop(self, x, pad_H, pad_W):
         r"""
@@ -140,7 +136,6 @@ class RestModel(torch.nn.Module):
             return x
         else:
             H, W = x.shape[-2:]
-            print('DEBUG: CROP x.shape={} pad_H={}, pad_W={}'.format(x.shape, pad_H, pad_W))
             return x[..., :H - pad_H, :W - pad_W]
 
     def forward(self, x):
@@ -149,9 +144,20 @@ class RestModel(torch.nn.Module):
 
 class GradientDescentModel(torch.nn.Module):
     r"""
-    Implements GD
+    Implements FiRe Gradient Descent (GD).
 
-    TODO: docs
+    :param rest_model: RestModel object containing the model and physics.
+    :param max_iter: Maximum number of iterations.
+    :param lambd: Regularization parameter in the proximal operator.
+    :param gamma: Step-size of the prior term.
+    :param equivariant: Whether to use equivariant shifts.
+    :param apply_adjoint: Whether to apply the adjoint operator of the physics model.
+    :param stochastic: Whether to use stochastic physics.
+    :param average_last: Whether to average the last iterations.
+    :param average_gradient_steps: Number of gradient steps to average.
+    :param init_pinv: Whether to initialize with the pseudoinverse of the physics model.
+    :param return_u: Whether to return the intermediate u values.
+    :param list_gamma_values: List of gamma values for each model in case of multi-model.
     """
     def __init__(self, rest_model, max_iter=20, lambd=1., gamma=1., equivariant=True, apply_adjoint=False,
                  stochastic=True, average_last=True, average_gradient_steps=1, init_pinv=False, return_u=False,
@@ -296,7 +302,7 @@ class GradientDescentModel(torch.nn.Module):
 
                 if self.equivariant and it < self.max_iter - 1:
                     x_k, x_shift, y_shift = self.shift_op.A(x_k)
-                print('CHECKING SHAPES: x_k.shape={}, y.shape={}'.format(x_k.shape, y.shape))
+
                 if not debug and not return_all:
                     u, cost = self.gradient_model(x_k, gamma=self.gamma)
                 elif return_all:
@@ -313,9 +319,6 @@ class GradientDescentModel(torch.nn.Module):
                     list_x_k.append(x_k)
                     list_u_k.append(u)
                     list_uin_k.append(in_model)
-
-                # if debug and it == it_debug:
-                #     break
 
                 if self.average_last:
                     # average the last 10 iterations
@@ -346,6 +349,3 @@ class GradientDescentModel(torch.nn.Module):
             return x_k, u, logs, list_x_k, list_u_k, list_uin_k
         else:
             return x_k, u, logs
-
-
-
