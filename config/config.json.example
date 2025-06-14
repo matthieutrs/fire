@@ -1,0 +1,6 @@
+{
+    "ROOT_DATASET": "",
+    "ROOT_CKPT": "",
+    "GAUSS_KERNEL_PTH": "",
+    "MOTION_KERNEL_PTH": ""
+}

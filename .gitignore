@@ -1,0 +1,120 @@
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Model files and data
+*.pt
+*.h5
+*.pth
+*.ckpt
+*.tar.gz
+*.gz
+*-ubyte
+*tmp
+*.tar
+examples/*/*.png
+examples/*/*.gif
+
+# Documentation
+/docs/build/
+/docs/source/auto_examples/
+/docs/source/gen_modules/
+/docs/source/**/stubs/*
+
+# Project specific
+/experimental/
+/datasets/
+examples/*/datasets/
+/saved_models/
+wandb/
+kernels/
+measurements/
+degradations/
+results/
+tmp/
+sg_execution_times.rst
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+results_multiprior/
+results_single_prior/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Allow to commit images/summary_compressed.jpg
+!images/summary_compressed.jpg
